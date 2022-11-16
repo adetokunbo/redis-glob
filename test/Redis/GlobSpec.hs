@@ -1,6 +1,3 @@
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE LambdaCase #-}
-{-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS_HADDOCK prune not-home #-}
 
@@ -29,12 +26,6 @@ spec = describe "Glob" $ do
     it "should roundtrip with 'fromParts'" prop_multi_trip
 
 
-prop_trip :: Property
-prop_trip =
-  withMaxSuccess 15000 $
-    forAll genPart $ \p -> parsePart (fromPart p) == Just p
-
-
 prop_multi_trip :: Property
 prop_multi_trip =
   withMaxSuccess 15000 $
@@ -43,26 +34,33 @@ prop_multi_trip =
       parseParts (fromParts allParts) == Just allParts
 
 
-genPart :: Gen Part
-genPart =
+prop_trip :: Property
+prop_trip =
+  withMaxSuccess 15000 $
+    forAll genParts $ \p -> parsePart (fromPart p) == Just p
+
+
+-- Avoid generating:
+-- An InRange that starts with hat; this parses except when it's the first item
+-- A single that just contains a dash; surrounded by other singles this mimicks InRange
+-- An InRange with that starts with a dash, when preceded by a single this parses as the wrong InRange
+-- A single 'hat', when it is first char, it changes a Squared to a Negated
+genInSquare :: Gen InSquare
+genInSquare =
   frequency
-    [ (1, pure Any)
-    , (1, pure Many)
-    , (2, genRange)
-    , (2, genChoice)
-    , (2, genExcept)
-    , (3, genUnescaped)
+    [ (3, Single <$> (avoidHat . avoidDash) genInnerChar)
+    , (1, InRange <$> (avoidHat . avoidDash) (avoid A.Backslash genInnerChar) <*> genInnerChar)
     ]
 
 
-genSpecials :: Gen Part
-genSpecials =
+genParts :: Gen Part
+genParts =
   frequency
     [ (1, pure Any)
     , (1, pure Many)
-    , (2, genRange)
-    , (2, genChoice)
-    , (2, genExcept)
+    , (2, Squared <$> genInSquare <*> listOf genInSquare)
+    , (2, Negated <$> genInSquare <*> listOf genInSquare)
+    , (3, Unescaped <$> genPrintable <*> listOf genPrintable)
     ]
 
 
@@ -71,25 +69,19 @@ genSpecials =
 -- part cannot be unescaped
 genTwoParts :: Gen [Part]
 genTwoParts = do
-  part <- genPart
+  part <- genParts
   special <- genSpecials
   pure [special, part]
 
 
-genRange :: Gen Part
-genRange = Range <$> avoidHat genInnerChar <*> genPrintable
-
-
-genChoice :: Gen Part
-genChoice = Choice <$> avoidHat genInnerChar <*> avoidDash genInnerChar <*> listOf genInnerChar
-
-
-genExcept :: Gen Part
-genExcept = Except <$> avoidDash genInnerChar <*> listOf genInnerChar
-
-
-genUnescaped :: Gen Part
-genUnescaped = Unescaped <$> genPrintable <*> listOf genPrintable
+genSpecials :: Gen Part
+genSpecials =
+  frequency
+    [ (1, pure Any)
+    , (1, pure Many)
+    , (2, Squared <$> genInSquare <*> listOf genInSquare)
+    , (2, Negated <$> genInSquare <*> listOf genInSquare)
+    ]
 
 
 genPrintable :: Gen Word8
@@ -101,8 +93,12 @@ genInnerChar = genPrintable `suchThat` (/= A.fromChar A.RightSquareBracket)
 
 
 avoidHat :: Gen Word8 -> Gen Word8
-avoidHat = (`suchThat` (/= A.fromChar A.Caret))
+avoidHat = avoid A.Caret
 
 
 avoidDash :: Gen Word8 -> Gen Word8
-avoidDash = (`suchThat` (/= A.fromChar A.HyphenMinus))
+avoidDash = avoid A.HyphenMinus
+
+
+avoid :: A.Char -> Gen Word8 -> Gen Word8
+avoid x = (`suchThat` (/= A.fromChar x))
