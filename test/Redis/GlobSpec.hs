@@ -14,7 +14,8 @@ import qualified ASCII.Char as A
 import qualified ASCII.Superset as A
 import qualified Data.ByteString.Lazy as BL
 import Data.Word (Word8)
-import Database.Redis.Glob
+import Redis.Glob
+import Redis.Glob.Internal
 import Test.Hspec
 import Test.QuickCheck
 

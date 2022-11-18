@@ -1,10 +1,10 @@
 cabal-version:      3.0
 name:               hedis-glob
 version:            0.1.0.0
-synopsis:           Specify valid globs to match keys in relevant redis commands
+synopsis:           Specify valid redis globs
 description:
-  Supplies a data type and combinators that represent valid glob patterns for use
-  with redis commands that select keys using the pattern.
+  Supplies functions that parse and use glob patterns
+  Glob-matching works the same way as it does in redis commands
 
 license:            BSD-3-Clause
 license-file:       LICENSE
@@ -25,7 +25,8 @@ source-repository head
   location: https://github.com/adetokunbo/hedis-glob.git
 
 library
-  exposed-modules:  Database.Redis.Glob
+  exposed-modules:  Redis.Glob.Internal
+                    Redis.Glob
   hs-source-dirs:   src
   build-depends:
       base                 >= 4.11 && <5.0

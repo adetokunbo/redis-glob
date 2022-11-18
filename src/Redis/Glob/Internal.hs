@@ -5,17 +5,17 @@
 {-# OPTIONS_HADDOCK prune not-home #-}
 
 {- |
-Module      : Database.Redis.Glob
+Module      : Redis.Glob.Internal
 Copyright   : (c) 2022 Tim Emiola
 Maintainer  : Tim Emiola <adetokunbo@emio.la>
 SPDX-License-Identifier: BSD3
 
-Provide a type that models redis @glob@ patterns and provides combinators that
-can be used to validate and use them.
+Provides types that model redis @glob@ patterns and combinators that can be used
+to validate and interpret them.
 
-Assumes that the non-printable ASCII characters are __not__ matched.
+Assumes that @glob@ do __not__ match the non-printable ASCII characters.
 -}
-module Database.Redis.Glob (
+module Redis.Glob.Internal (
   -- * modelling @Globs@
   Part (..),
   InSquare (..),
@@ -26,12 +26,9 @@ module Database.Redis.Glob (
   fromParts,
   fromPart,
 
-  -- * useful resulting combinators
-  validate,
-  matchParts,
-  matches,
+  -- * useful combinators
   reduceMany,
-
+  matchParts,
 ) where
 
 import qualified ASCII.Char as A
@@ -46,18 +43,8 @@ import Text.Megaparsec
 import qualified Text.Megaparsec.Byte as P
 
 
--- | Parse type for parsing 'ByteString'
+-- | Parse type for parsing @'ByteString'-like@
 type Parser s m = (MonadParsec Void s m, Token s ~ Word8)
-
-
-{- | Confirm that a glob @pattern@ is valid
-
-the result is:
-- @Nothing@ when the pattern is invalid
-- Just @norm@, where norm is a normalized version of the @pattern@
--}
-validate :: ByteString -> Maybe ByteString
-validate = fmap fromParts . parseParts
 
 
 parseInSquare :: (Parser s m, Token s ~ Word8) => m a -> m a
@@ -142,25 +129,14 @@ data Part
   deriving (Eq, Show)
 
 
+-- | Represents part of a valid redis glob pattern.
 data InSquare
   = Single Word8
   | InRange Word8 Word8
   deriving (Eq, Show)
 
 
-{- | Confirm that a @target@ 'Bytestring' matches the @pattern@ defined by another.
-
-the result is:
-- 'False' when the pattern is invalid or does not match @target@
-- otherwise it's 'True'
--}
-matches :: ByteString -> ByteString -> Bool
-matches target patt = case parseParts patt of
-  Nothing -> False
-  Just parts -> matchParts target parts
-
-
--- | Like 'matches', but the pattern to be matched is provide as @['Part']@.
+-- | Confirm that a @target@ 'ByteString' matches the pattern provided as @['Part']@.
 matchParts :: ByteString -> [Part] -> Bool
 matchParts target = isJust . flip parseAsMatcher target
 
@@ -173,11 +149,10 @@ matcher :: Parser s m => [Part] -> m [Word8]
 matcher = foldr matcherStep (pure mempty) . reduceMany
 
 
-{- normalise parsed @'Part's@ replacing
+{- | Normalise parsed @'Part's@
 
 All but a terminating @Many@ are replaced with GenerousMany;
 Consecutive @Many@s are replaced by a single GenerousMany
-
 -}
 reduceMany :: [Part] -> [Part]
 reduceMany =
