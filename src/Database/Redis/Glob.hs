@@ -31,6 +31,7 @@ module Database.Redis.Glob (
   matchParts,
   matches,
   reduceMany,
+
 ) where
 
 import qualified ASCII.Char as A
@@ -213,7 +214,7 @@ innerStar_ = fmap snd . innerStar
 
 innerStar :: (Parser s m, Token s ~ Word8) => m a -> m ([Word8], a)
 innerStar parser = do
-  (a, b) <- manyTill_ P.asciiChar parser
+  (a, b) <- someTill_ P.asciiChar parser
   pure (a, b)
 
 
