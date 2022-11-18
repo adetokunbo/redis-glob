@@ -3,8 +3,9 @@ name:               hedis-glob
 version:            0.1.0.0
 synopsis:           Specify valid redis globs
 description:
-  Supplies functions that parse and use glob patterns
-  Glob-matching works the same way as it does in redis commands
+  Supplies functions that parse and use redis glob patterns
+  I.e, glob-matching works as it does in redis commands like
+  [KEYS](https://redis.io/commands/keys/)
 
 license:            BSD-3-Clause
 license-file:       LICENSE
@@ -19,6 +20,8 @@ build-type:         Simple
 extra-source-files:
   ChangeLog.md
   README.md
+tested-with:
+  GHC == 8.10.7
 
 source-repository head
   type:     git
@@ -39,7 +42,6 @@ library
   ghc-options:      -Wall -Wincomplete-uni-patterns -fwarn-tabs
   if impl (ghc >= 8.4)
     ghc-options: -Wpartial-fields
-
 
 
 test-suite test
