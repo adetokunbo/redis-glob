@@ -1,5 +1,3 @@
-{-# LANGUAGE ConstraintKinds #-}
-{-# LANGUAGE FlexibleContexts #-}
 {-# OPTIONS_HADDOCK prune not-home #-}
 
 {- |
@@ -19,7 +17,7 @@ module Redis.Glob (
 ) where
 
 import Data.ByteString.Lazy (ByteString)
-import Redis.Glob.Internal (parseParts, fromParts, matchParts)
+import Redis.Glob.Internal (fromParts, matchParts, parseParts)
 
 
 {- | Confirm that a glob @pattern@ is valid

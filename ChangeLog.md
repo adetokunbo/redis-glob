@@ -1,6 +1,6 @@
-# Revision history for hedis-glob
+# Revision history for redis-glob
 
-`hedis-glob` uses [PVP Versioning][1].
+`redis-glob` uses [PVP Versioning][1].
 
 ## 0.1.0.0 -- 2022-08-09
 
