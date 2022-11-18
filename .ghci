@@ -1,0 +1,3 @@
+:set -XOverloadedStrings
+import qualified Data.ByteString.Lazy as BL
+let explore = \t ps -> map (\(i, p) -> (i, t `matches` p)) (zip [0..] ps)
