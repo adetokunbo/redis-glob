@@ -10,12 +10,14 @@
 Redis commands like [KEYS] use glob expressions to match keys in redis.
 
 If the glob expression is invalid, the command returns an empty result, which
-unfortunately is the same result as if the expression was valid but had no
-results.
+unfortunately is the same as if the expression was valid but had no results.
 
-The `validate` function is used to confirm that an expression is valid. It
-parses the expression in the same way as the actual [redis glob], returning
+Use `validate` to confirm if a glob expression is valid. It parses the
+expression in the same way as the actual [redis glob] implementation, returning
 `Nothing` for invalid expressions.
+
+`matches` can be used to confirm that a bytestring matches a glob expression if
+the the glob expression is valid.
 
 ## Example
 
@@ -27,14 +29,18 @@ import qualified Data.ByteString.Lazy.Char8 as CL
 
 
 isOK :: CL.ByteString -> IO ()
-isOk b = CL.putStrLn $ "Is " <> b <> " ok? :" <> maybe "n" (const "y") (validate b)
-
+isOk b = do
+  CL.putStrLn $ "Is " <> b <> " ok? " <> maybe "n" (const "y") (validate b)
+  CL.putStrLn $ "Does it match hello? " <> if (b `matches` "hello") then "y" else "n"
 
 main :: IO()
 main = do
-  isOK "h?llo"  -- "Is h?llo ok? y"
-  isOK "h[a-b]llo" -- Is h[a-b]llo ok? y"
-  isOK "h[a-]llo" -- Is h[a-]llo ok? n"
+  isOK "h?llo"     -- Is h?llo ok? y
+                   -- Does it match hello? y
+  isOK "y[a-b]llo" -- Is y[a-b]llo ok? y"
+                   -- Does it match hello? n
+  isOK "h[a-]llo"  -- Is h[a-]llo ok? n
+                   -- Does it match hello? n
 ```
 
 [1]: https://hackage.haskell.org/package/wai
