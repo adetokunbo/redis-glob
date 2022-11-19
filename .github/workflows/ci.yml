@@ -8,14 +8,14 @@ on:
       - opened
       - synchronize
 jobs:
-  ormolu:
+  fourmolu:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: mrkkrp/ormolu-action@v7
+      - uses: fourmolu/fourmolu-action@v1
   build:
     runs-on: ubuntu-latest
-    needs: ormolu
+    needs: fourmolu
     strategy:
       matrix:
         cabal: ["3.6", "3.8"]
