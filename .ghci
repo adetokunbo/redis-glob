@@ -1,3 +1,7 @@
 :set -XOverloadedStrings
+:load Redis.Glob.Internal Redis.Glob
+import Redis.Glob
 import qualified Data.ByteString.Lazy as BL
+import qualified Data.ByteString.Lazy.Char8 as C8L
 let explore = \t ps -> map (\(i, p) -> (i, t `matches` p)) (zip [0..] ps)
+let isOk = \b -> C8L.putStrLn $ "Is " <> b <> " ok? :" <> maybe "n" (const "y") (validate b)
