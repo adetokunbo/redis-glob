@@ -18,13 +18,30 @@ module Redis.Glob (
 
 import Data.ByteString.Lazy (ByteString)
 import Redis.Glob.Internal (fromParts, matchParts, parseParts)
-
+ 
+-- $setup
+-- >>> import Data.ByteString.Lazy (ByteString)
+-- >>> import Redis.Glob.Internal
+-- >>> :set -XOverloadedStrings
 
 {- | Confirm that a glob @pattern@ is valid
 
 the result is:
 - @Nothing@ when the pattern is invalid
 - Just @norm@, where norm is a normalized version of the @pattern@
+
+
+==== __Examples__
+
+>>> validate "hel?o"
+Just "hel?o"
+
+>>> validate "hel[i-m]o"
+Just "hel[i-m]o"
+
+>>> validate "hell[i-]o"
+Nothing
+
 -}
 validate :: ByteString -> Maybe ByteString
 validate = fmap fromParts . parseParts
@@ -35,6 +52,19 @@ validate = fmap fromParts . parseParts
 the result is:
 - 'False' when the pattern is invalid or does not match @target@
 - otherwise it's 'True'
+
+
+==== __Examples__
+
+>>> "hello" `matches` "hel?o"
+True
+
+>>> "hello world" `matches` "[^m-z]el[i-m]o w*"
+True
+
+>>> "yello world" `matches` "[^m-z]el[i-m]o w???d"
+False
+
 -}
 matches :: ByteString -> ByteString -> Bool
 matches target patt = maybe False (matchParts target) $ parseParts patt
