@@ -1,31 +1,46 @@
-name: "Nix Build"
+name: CI
 on:
-  pull_request:
   push:
-    branches: [master]
+    branches:
+      - master
+  pull_request:
+    types:
+      - opened
+      - synchronize
 jobs:
-  cabal-nix:
+  ormolu:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2.3.4
-    - uses: cachix/install-nix-action@v13
-      with:
-        nix_path: nixpkgs=channel:nixos-unstable
-    - name: Initalize User Nix conf
-      run: |
-        mkdir -p $HOME/.config/nix
-    - name: Add haskell.nix as a substituter in the user Nix conf
-      run: |
-        echo "substituters = https://cache.nixos.org https://hydra.iohk.io" >> $HOME/.config/nix/nix.conf
-    - name: Add the public key for the haskell.nix substituter
-      run: |
-        echo "trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=" >> $HOME/.config/nix/nix.conf
-    - uses: cachix/cachix-action@v10
-      with:
-        name: adetokunbo-open
-    - name: Display the completed user Nix conf
-      run: |
-        cat $HOME/.config/nix/nix.conf
-    - name: Run the tests in a nix-shell
-      run: |
-        nix-shell --run "cabal new-test --test-show-details=streaming"
+      - uses: actions/checkout@v3
+      - uses: mrkkrp/ormolu-action@v7
+  build:
+    runs-on: ubuntu-latest
+    needs: ormolu
+    strategy:
+      matrix:
+        cabal: ["3.6", "3.8"]
+        ghc: ["8.10.7", "9.0.2", "9.2.4", "9.4.1"]
+    env:
+      CONFIG: "--enable-tests --enable-benchmarks --flags=dev"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: haskell/actions/setup@v2
+        id: setup-haskell-cabal
+        with:
+          ghc-version: ${{ matrix.ghc }}
+          cabal-version: ${{ matrix.cabal }}
+      - run: cabal update
+      - run: cabal freeze $CONFIG
+      - uses: actions/cache@v3.0.7
+        with:
+          path: |
+            ${{ steps.setup-haskell-cabal.outputs.cabal-store }}
+            dist-newstyle
+          key: ${{ runner.os }}-${{ matrix.ghc }}-${{ hashFiles('cabal.project.freeze') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.ghc }}-
+      - run: cabal format && git diff --exit-code --color=always
+      - run: cabal build $CONFIG
+      - run: cabal test $CONFIG
+      - run: cabal haddock $CONFIG
+      - run: cabal sdist
