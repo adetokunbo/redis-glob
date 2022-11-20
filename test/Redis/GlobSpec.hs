@@ -44,7 +44,8 @@ prop_multi_trip =
 prop_trip :: Property
 prop_trip =
   withMaxSuccess 15000 $
-    forAll genParts $ \p -> parsePart (fromPart p) == Just p
+    forAll genParts $
+      \p -> parsePart (fromPart p) == Just p
 
 
 prop_match :: Property
