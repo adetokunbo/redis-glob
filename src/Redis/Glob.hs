@@ -18,11 +18,14 @@ module Redis.Glob (
 
 import Data.ByteString.Lazy (ByteString)
 import Redis.Glob.Internal (fromParts, matchParts, parseParts)
- 
--- $setup
--- >>> import Data.ByteString.Lazy (ByteString)
--- >>> import Redis.Glob.Internal
--- >>> :set -XOverloadedStrings
+
+
+{- $setup
+ >>> import Data.ByteString.Lazy (ByteString)
+ >>> import Redis.Glob.Internal
+ >>> :set -XOverloadedStrings
+-}
+
 
 {- | Confirm that a glob @pattern@ is valid
 
@@ -41,7 +44,6 @@ Just "hel[i-m]o"
 
 >>> validate "hell[i-]o"
 Nothing
-
 -}
 validate :: ByteString -> Maybe ByteString
 validate = fmap fromParts . parseParts
@@ -64,7 +66,6 @@ True
 
 >>> "yello world" `matches` "[^m-z]el[i-m]o w???d"
 False
-
 -}
 matches :: ByteString -> ByteString -> Bool
 matches target patt = maybe False (matchParts target) $ parseParts patt
