@@ -2,7 +2,7 @@
 
 `redis-glob` uses [PVP Versioning][1].
 
-## 0.1.0.0 -- 2022-08-09
+## 0.1.0.0 -- 2022-11-21
 
 * Initial version.
 

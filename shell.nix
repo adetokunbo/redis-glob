@@ -9,7 +9,6 @@ in
     # Some common tools can be added with the `tools` argument
     tools = {
       cabal = "latest";
-      hlint = "latest"; # Selects the latest version in the hackage.nix snapshot
       haskell-language-server = "latest";
       ghcid = "latest";
       fourmolu = "latest";

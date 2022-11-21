@@ -1,4 +1,1 @@
 packages: .
-
-package redis-glob
-  flags: +use-doc-tests
