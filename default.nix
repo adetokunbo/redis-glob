@@ -1,6 +1,6 @@
 let
-  # Pin haskell-nix to a recent (as of 2022/11/15) commit
-  h8x-pin = "https://github.com/input-output-hk/haskell.nix/archive/c43557a037fbc5f1040a7c30e22aa2760339aa81.tar.gz";
+  # Pin haskell-nix to a recent (as of 2022/11/23) commit
+  h8x-pin = "https://github.com/input-output-hk/haskell.nix/archive/983c6d74b9d2de9bb195392974c4b861a78160e2.tar.gz";
   h8x-src = builtins.fetchTarball h8x-pin;
   h8x = import h8x-src {};
 
@@ -30,5 +30,5 @@ in pkgs.haskell-nix.cabalProject {
   compiler-nix-name = "ghc8107";
 
   # Specify the hackage index state
-  index-state = "2022-11-14T00:00:00Z";
+  index-state = "2022-11-23T00:00:00Z";
 }
