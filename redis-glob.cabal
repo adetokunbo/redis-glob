@@ -1,6 +1,6 @@
 cabal-version:      3.0
 name:               redis-glob
-version:            0.1.0.2
+version:            0.1.0.3
 license:            BSD-3-Clause
 license-file:       LICENSE
 maintainer:         adetokunbo@emio.la
@@ -36,8 +36,8 @@ library
   default-language: Haskell2010
   ghc-options:      -Wall -Wincomplete-uni-patterns -fwarn-tabs
   build-depends:
-    , ascii-char      >=1.0      && <1.1
-    , ascii-superset  >=1.0      && <1.1
+    , ascii-char      >=1.0      && <1.3
+    , ascii-superset  >=1.0      && <1.3
     , base            >=4.11     && <5.0
     , bytestring      >=0.10.8.2 && <0.11 || >=0.11.3.1 && <0.12
     , megaparsec      >=9.2.1    && <9.4
