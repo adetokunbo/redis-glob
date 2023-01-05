@@ -2,6 +2,10 @@
 
 `redis-glob` uses [PVP Versioning][1].
 
+## 0.1.0.3 -- 2023-01-05
+
+* Relax dependencies
+
 ## 0.1.0.2 -- 2022-11-21
 
 * Tweak package metadata
