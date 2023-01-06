@@ -32,7 +32,6 @@ module Redis.Glob.Internal (
 ) where
 
 import qualified ASCII.Char as A
-import qualified ASCII.Superset as A
 import Data.ByteString.Builder (Builder, toLazyByteString, word8)
 import Data.ByteString.Lazy (ByteString)
 import Data.Functor (($>))
@@ -266,10 +265,10 @@ inSquare inside = word8 leftSquare <> inside <> word8 rightSquare
 
 
 hat, qmark, star, leftSquare, rightSquare, dash, backslash :: Word8
-hat = A.fromChar A.Caret
-qmark = A.fromChar A.QuestionMark
-star = A.fromChar A.Asterisk
-leftSquare = A.fromChar A.LeftSquareBracket
-rightSquare = A.fromChar A.RightSquareBracket
-dash = A.fromChar A.HyphenMinus
-backslash = A.fromChar A.Backslash
+hat = A.toWord8 A.Caret
+qmark = A.toWord8 A.QuestionMark
+star = A.toWord8 A.Asterisk
+leftSquare = A.toWord8 A.LeftSquareBracket
+rightSquare = A.toWord8 A.RightSquareBracket
+dash = A.toWord8 A.HyphenMinus
+backslash = A.toWord8 A.Backslash
