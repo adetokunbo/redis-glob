@@ -2,6 +2,10 @@
 
 `redis-glob` uses [PVP Versioning][1].
 
+## 0.1.0.4 -- 2023-01-07
+
+* Remove dependency on ascii-superset
+
 ## 0.1.0.3 -- 2023-01-05
 
 * Relax dependencies
