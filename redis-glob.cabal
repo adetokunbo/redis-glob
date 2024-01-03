@@ -1,6 +1,6 @@
 cabal-version:      3.0
 name:               redis-glob
-version:            0.1.0.6
+version:            0.1.0.7
 license:            BSD-3-Clause
 license-file:       LICENSE
 maintainer:         adetokunbo@emio.la
@@ -39,7 +39,7 @@ library
     , ascii-char      >=1.0.1    && <1.1
     , base            >=4.11     && <5.0
     , bytestring      >=0.10.8.2 && <0.11 || >=0.11.3.1 && <0.12.1
-    , megaparsec      >=9.2.1    && <9.6
+    , megaparsec      >=9.2.1    && <9.7
 
   if impl(ghc >=8.4)
     ghc-options: -Wpartial-fields
