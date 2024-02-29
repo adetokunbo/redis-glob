@@ -2,6 +2,10 @@
 
 `redis-glob` uses [PVP Versioning][1].
 
+## 0.1.0.8 -- 2024-02-28
+
+* Expand upper bounds for bytestring 
+
 ## 0.1.0.7 -- 2024-01-03
 
 * Expand upper bounds for megaparsec
