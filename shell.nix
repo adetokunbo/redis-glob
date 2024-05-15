@@ -2,14 +2,14 @@ let
   project = import ./default.nix {};
 in
   project.shellFor {
-    # Builds a Hoogle documentation index of all dependencies,
-    # and provides a "hoogle" command to search the index.
-    withHoogle = true;
+    # Don't build haddock to optimize build time
+    withHaddock = false;
+    withHoogle = false;
 
     # Some common tools can be added with the `tools` argument
     tools = {
       cabal = "latest";
-      hlint = "latest"; # Selects the latest version in the hackage.nix snapshot
+      hlint = "3.6.1";
       haskell-language-server = "latest";
       ghcid = "latest";
       fourmolu = "0.14.0.0";
