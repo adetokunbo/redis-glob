@@ -1,1 +1,7 @@
 packages: .
+
+tests: True
+
+test-show-details: streaming
+
+write-ghc-environment-files: always
