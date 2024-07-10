@@ -5,7 +5,7 @@ license:            BSD-3-Clause
 license-file:       LICENSE
 maintainer:         adetokunbo@emio.la
 author:             Tim Emiola
-tested-with:        GHC ==8.10.7 || ==9.0.2 || ==9.2.4 || ==9.4.1
+tested-with:        GHC ==8.10.7 || ==9.0.2 || ==9.2.8 || ==9.4.8 || ==9.6.6
 homepage:           https://github.com/adetokunbo/redis-glob#readme
 bug-reports:        https://github.com/adetokunbo/redis-glob/issues
 synopsis:           Specify valid redis globs

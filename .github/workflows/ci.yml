@@ -18,10 +18,10 @@ jobs:
     needs: fourmolu
     strategy:
       matrix:
-        cabal: ["3.6", "3.8"]
-        ghc: ["8.10.7", "9.0.2", "9.2.4", "9.4.1"]
+        cabal: ["latest"]
+        ghc: ["8.10.7", "9.0.2", "9.2.8", "9.4.8", "9.6.6"]
     env:
-      CONFIG: "--enable-tests --enable-benchmarks --flags=dev"
+      CONFIG: "--enable-tests --enable-benchmarks --flags=use-doc-tests"
     steps:
       - uses: actions/checkout@v3
       - uses: haskell/actions/setup@v2
