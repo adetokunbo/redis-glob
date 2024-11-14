@@ -2,6 +2,10 @@
 
 `redis-glob` uses [PVP Versioning][1].
 
+## 0.1.0.10 -- 2025-01-06
+
+* Extend tested-with GHC versions
+
 ## 0.1.0.9 -- 2025-01-06
 
 * Expand upper bounds for megaparsec 
