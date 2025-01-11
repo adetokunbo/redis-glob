@@ -11,7 +11,6 @@ SPDX-License-Identifier: BSD3
 module Redis.GlobSpec (spec, genWithOkPatterns) where
 
 import qualified ASCII.Char as A
-import qualified ASCII.Superset as A
 import qualified Data.ByteString.Lazy as BL
 import Data.Word (Word8)
 import Redis.Glob
@@ -164,7 +163,7 @@ genPrintable = chooseEnum (32, 127)
 
 
 genInnerChar :: Gen Word8
-genInnerChar = genPrintable `suchThat` (/= A.fromChar A.RightSquareBracket)
+genInnerChar = genPrintable `suchThat` (/= fromChar' A.RightSquareBracket)
 
 
 genSimpleChar :: Gen Word8
@@ -183,4 +182,8 @@ notSimpleChars =
 
 
 avoidElem :: [A.Char] -> Gen Word8 -> Gen Word8
-avoidElem xs = (`suchThat` (\x -> x `notElem` map A.fromChar xs))
+avoidElem xs = (`suchThat` (\x -> x `notElem` map fromChar' xs))
+
+
+fromChar' :: A.Char -> Word8
+fromChar' = fromIntegral . A.toInt
