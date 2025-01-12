@@ -1,6 +1,6 @@
 cabal-version:      3.0
 name:               redis-glob
-version:            0.1.0.9
+version:            0.1.0.10
 license:            BSD-3-Clause
 license-file:       LICENSE
 maintainer:         adetokunbo@emio.la
