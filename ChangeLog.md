@@ -2,6 +2,13 @@
 
 `redis-glob` uses [PVP Versioning][1].
 
+## 0.1.0.10 -- 2025-01-12
+
+* Inline fromChar from ASCII.Superset, allowing it to be removed as a dependency
+
+* Copy the latest version ASCII.Char from ascii-char into the package, removing
+  it as a dependency
+
 ## 0.1.0.9 -- 2025-01-06
 
 * Expand upper bounds for megaparsec 

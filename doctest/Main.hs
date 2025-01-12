@@ -3,4 +3,4 @@ import Test.DocTest
 
 
 main :: IO ()
-main = doctest ["src"]
+main = doctest ["src", "ascii-char"]
