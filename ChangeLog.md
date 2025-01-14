@@ -2,6 +2,10 @@
 
 `redis-glob` uses [PVP Versioning][1].
 
+## 0.1.0.11 -- 2025-01-04
+
+* Expand upper bounds for hashable 
+
 ## 0.1.0.10 -- 2025-01-12
 
 * Inline fromChar from ASCII.Superset, allowing it to be removed as a dependency
