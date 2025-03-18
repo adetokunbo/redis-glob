@@ -11,7 +11,7 @@ jobs:
   fourmolu:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: fourmolu/fourmolu-action@v5
   build:
     runs-on: ubuntu-latest
@@ -23,7 +23,7 @@ jobs:
     env:
       CONFIG: "--enable-tests --enable-benchmarks --flags=use-doc-tests"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: haskell/actions/setup@v2
         id: setup-haskell-cabal
         with:
@@ -31,7 +31,7 @@ jobs:
           cabal-version: ${{ matrix.cabal }}
       - run: cabal update
       - run: cabal freeze $CONFIG
-      - uses: actions/cache@v3.0.7
+      - uses: actions/cache@v4
         with:
           path: |
             ${{ steps.setup-haskell-cabal.outputs.cabal-store }}
