@@ -41,9 +41,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ matrix.ghc }}-${{ matrix.package }}-
       - run: cabal build ${{ matrix.package }} $CONFIG
-      - run: cabal test ${{ matrix.package }} $CONFIG
-      - run: cabal haddock ${{ matrix.package }} $CONFIG
-      - run: cabal sdist ${{ matrix.package }}
+      - run: cabal test "${{ matrix.package }}:test"
+      - run: cabal haddock ${{ matrix.package }}
+      - run: cabal sdist
 
   build-latest:
     runs-on: ubuntu-latest
