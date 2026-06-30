@@ -20,7 +20,7 @@ jobs:
         cabal: ["latest"]
         ghc: ["8.10.7", "9.0.2", "9.2.8", "9.4.8", "9.6", "9.8", "9.10", "9.12"]
         package:
-          - "hs-repo-seed"
+          - "redis-glob"
     env:
       CONFIG: "--enable-tests --enable-benchmarks --flags=build-the-readme --flags=use-doc-tests"
     steps:
